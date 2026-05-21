@@ -583,7 +583,7 @@ RESPONSIVE
 
             <i class="fa fa-arrow-down"></i>
 
-            <span>Stok Masuk</span>
+            <span>Penerimaan Barang</span>
 
         </a>
 
@@ -592,7 +592,7 @@ RESPONSIVE
 
             <i class="fa fa-arrow-up"></i>
 
-            <span>Stok Keluar</span>
+            <span>Pengeluaran Barang</span>
 
         </a>
 
@@ -685,7 +685,7 @@ RESPONSIVE
 
             <i class="fa fa-arrow-down"></i>
 
-            <span>Stok Masuk</span>
+            <span>Penerimaan Barang</span>
 
         </a>
 
@@ -694,7 +694,7 @@ RESPONSIVE
 
             <i class="fa fa-arrow-up"></i>
 
-            <span>Stok Keluar</span>
+            <span>Pengeluaran Barang</span>
 
         </a>
 
