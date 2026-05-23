@@ -546,91 +546,155 @@ RESPONSIVE
 
         <!-- ADMIN -->
 
-        @if(auth()->user()->role == 'admin')
+<!-- ADMIN -->
 
-        <div class="menu-title">
+@if(auth()->user()->role == 'admin')
 
-            MASTER DATA
+<div class="menu-title">
 
-        </div>
+    MASTER DATA
 
-        <a href="/produk"
-           class="{{ request()->is('produk*') ? 'active' : '' }}">
+</div>
 
-            <i class="fa fa-box"></i>
+<!-- PRODUK INVENTORY -->
 
-            <span>Produk</span>
+<a href="/produk"
+   class="{{ request()->segment(1) == 'produk'
+   ? 'active'
+   : '' }}">
 
-        </a>
+    <i class="fa fa-box"></i>
 
-        <a href="/supplier"
-           class="{{ request()->is('supplier*') ? 'active' : '' }}">
+    <span>Produk Inventory</span>
 
-            <i class="fa fa-truck"></i>
+</a>
 
-            <span>Supplier</span>
+<!-- PRODUK CUSTOMER -->
 
-        </a>
+<a href="/produk-customer"
+   class="{{ request()->segment(1) == 'produk-customer'
+   ? 'active'
+   : '' }}">
 
-        <div class="menu-title">
+    <i class="fa fa-store"></i>
 
-            INVENTORY
+    <span>Produk Customer</span>
 
-        </div>
+</a>
 
-        <a href="/stok-masuk"
-           class="{{ request()->is('stok-masuk*') ? 'active' : '' }}">
+<!-- SUPPLIER -->
 
-            <i class="fa fa-arrow-down"></i>
+<a href="/supplier"
+   class="{{ request()->is('supplier*') ? 'active' : '' }}">
 
-            <span>Penerimaan Barang</span>
+    <i class="fa fa-truck"></i>
 
-        </a>
+    <span>Mitra Supplier</span>
 
-        <a href="/stok-keluar"
-           class="{{ request()->is('stok-keluar*') ? 'active' : '' }}">
+</a>
 
-            <i class="fa fa-arrow-up"></i>
+<div class="menu-title">
 
-            <span>Pengeluaran Barang</span>
+    INVENTORY
 
-        </a>
+</div>
 
-        <a href="/transaksi"
-           class="{{ request()->is('transaksi*') ? 'active' : '' }}">
+<!-- PENERIMAAN -->
 
-            <i class="fa fa-cart-shopping"></i>
+<a href="/stok-masuk"
+   class="{{ request()->is('stok-masuk*') ? 'active' : '' }}">
 
-            <span>Transaksi</span>
+    <i class="fa fa-arrow-down"></i>
 
-        </a>
+    <span>Penerimaan Barang</span>
 
-        <div class="menu-title">
+</a>
 
-            MANAGEMENT
+<!-- DISTRIBUSI -->
 
-        </div>
+<a href="/stok-keluar"
+   class="{{ request()->is('stok-keluar*') ? 'active' : '' }}">
 
-        <a href="/laporan"
-           class="{{ request()->is('laporan*') ? 'active' : '' }}">
+    <i class="fa fa-arrow-up"></i>
 
-            <i class="fa fa-file-pdf"></i>
+    <span>Distribusi Barang</span>
 
-            <span>Laporan</span>
+</a>
 
-        </a>
+<div class="menu-title">
 
-        <a href="/user"
-           class="{{ request()->is('user*') ? 'active' : '' }}">
+    PENJUALAN
 
-            <i class="fa fa-users"></i>
+</div>
 
-            <span>Manajemen User</span>
+<!-- PESANAN CUSTOMER -->
 
-        </a>
+<a href="/pesanan"
+   class="{{ request()->is('pesanan*') ? 'active' : '' }}">
 
-        @endif
+    <i class="fa fa-cart-shopping"></i>
 
+    <span>Pesanan Customer</span>
+
+</a>
+
+<!-- TRANSAKSI -->
+
+<a href="/transaksi"
+   class="{{ request()->is('transaksi*') ? 'active' : '' }}">
+
+    <i class="fa fa-cash-register"></i>
+
+    <span>Checkout Penjualan</span>
+
+</a>
+
+<div class="menu-title">
+
+    ANALYTICS
+
+</div>
+
+<!-- LAPORAN -->
+
+<a href="/laporan"
+   class="{{ request()->is('laporan*') ? 'active' : '' }}">
+
+    <i class="fa fa-chart-line"></i>
+
+    <span>Laporan Penjualan</span>
+
+</a>
+
+<!-- ANALYTICS -->
+
+<a href="/analytics"
+   class="{{ request()->is('analytics*') ? 'active' : '' }}">
+
+    <i class="fa fa-chart-pie"></i>
+
+    <span>Analytics</span>
+
+</a>
+
+<div class="menu-title">
+
+    MANAGEMENT
+
+</div>
+
+<!-- USER -->
+
+<a href="/user"
+   class="{{ request()->is('user*') ? 'active' : '' }}">
+
+    <i class="fa fa-users"></i>
+
+    <span>Data Pengguna</span>
+
+</a>
+
+@endif
         <!-- OWNER -->
 
         @if(auth()->user()->role == 'owner')

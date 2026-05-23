@@ -4,67 +4,176 @@
 
 <div class="table-card">
 
-<h3 class="mb-4">
+    <!-- HEADER -->
 
-Tambah Supplier
+    <div class="d-flex
+                justify-content-between
+                align-items-center
+                mb-4">
 
-</h3>
+        <div>
 
-<form action="/supplier/store"
-      method="POST">
+            <h3 class="fw-bold mb-1">
 
-@csrf
+                Tambah Supplier
 
-<div class="mb-3">
+            </h3>
 
-<label>
+            <p class="text-muted mb-0">
 
-Nama Supplier
+                Tambahkan data supplier inventory Payung Geulis
 
-</label>
+            </p>
 
-<input type="text"
-       name="nama_supplier"
-       class="form-control">
+        </div>
 
-</div>
+    </div>
 
-<div class="mb-3">
+    <!-- FORM -->
 
-<label>
+    <form action="/supplier/store"
+          method="POST">
 
-Alamat
+        @csrf
 
-</label>
+        <!-- NAMA SUPPLIER -->
 
-<textarea name="alamat"
-          class="form-control">
+        <div class="mb-3">
 
-</textarea>
+            <label class="form-label fw-semibold">
 
-</div>
+                Nama Supplier
 
-<div class="mb-3">
+            </label>
 
-<label>
+            <input type="text"
+                   name="nama_supplier"
+                   class="form-control rounded-4"
+                   placeholder="Masukkan nama supplier"
+                   required>
 
-No HP
+        </div>
 
-</label>
+        <!-- KATEGORI SUPPLIER -->
 
-<input type="text"
-       name="no_hp"
-       class="form-control">
+        <div class="mb-3">
 
-</div>
+            <label class="form-label fw-semibold">
 
-<button class="btn btn-warning">
+                Kategori Supplier
 
-Simpan
+            </label>
 
-</button>
+            <select
+                name="jenis_supplier"
+                class="form-control rounded-4"
+                required>
 
-</form>
+                <option value="">
+
+                    -- Pilih Kategori Supplier --
+
+                </option>
+
+                <option value="Kayu">
+
+                    Supplier Kayu
+
+                </option>
+
+                <option value="Kain">
+
+                    Supplier Kain
+
+                </option>
+
+                <option value="Cat">
+
+                    Supplier Cat
+
+                </option>
+
+                <option value="Aksesoris">
+
+                    Supplier Aksesoris
+
+                </option>
+
+                <option value="Packaging">
+
+                    Supplier Packaging
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <!-- ALAMAT -->
+
+        <div class="mb-3">
+
+            <label class="form-label fw-semibold">
+
+                Alamat
+
+            </label>
+
+            <textarea
+                name="alamat"
+                class="form-control rounded-4"
+                rows="4"
+                placeholder="Masukkan alamat supplier"
+                required></textarea>
+
+        </div>
+
+        <!-- NO HP -->
+
+        <div class="mb-4">
+
+            <label class="form-label fw-semibold">
+
+                No HP
+
+            </label>
+
+            <input type="text"
+                   name="no_hp"
+                   class="form-control rounded-4"
+                   placeholder="Masukkan nomor HP"
+                   required>
+
+        </div>
+
+        <!-- BUTTON -->
+
+        <div class="d-flex gap-2">
+
+            <button class="btn btn-warning
+                           rounded-4
+                           px-4">
+
+                <i class="fa fa-save"></i>
+
+                Simpan Supplier
+
+            </button>
+
+            <a href="/supplier"
+               class="btn btn-dark
+                      rounded-4
+                      px-4">
+
+                <i class="fa fa-arrow-left"></i>
+
+                Kembali
+
+            </a>
+
+        </div>
+
+    </form>
 
 </div>
 

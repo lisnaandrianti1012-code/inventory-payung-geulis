@@ -10,10 +10,12 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\ProdukCustomerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StokMasukController;
 use App\Http\Controllers\StokKeluarController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\PesananController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
@@ -100,7 +102,7 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
-    | PRODUK
+    | PRODUK INVENTORY
     |--------------------------------------------------------------------------
     */
 
@@ -121,6 +123,17 @@ Route::middleware([
         Route::get('/delete/{id}', 'destroy');
 
     });
+
+    /*
+    |--------------------------------------------------------------------------
+    | PRODUK CUSTOMER
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource(
+        'produk-customer',
+        ProdukCustomerController::class
+    );
 
     /*
     |--------------------------------------------------------------------------
@@ -179,7 +192,7 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
-    | STOK MASUK
+    | PENERIMAAN BARANG
     |--------------------------------------------------------------------------
     */
 
@@ -199,7 +212,7 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
-    | STOK KELUAR
+    | DISTRIBUSI BARANG
     |--------------------------------------------------------------------------
     */
 
@@ -232,7 +245,7 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
-    | TRANSAKSI
+    | CHECKOUT PENJUALAN
     |--------------------------------------------------------------------------
     */
 
@@ -261,6 +274,17 @@ Route::middleware([
 
     });
 
+    /*
+    |--------------------------------------------------------------------------
+    | PESANAN CUSTOMER
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource(
+        'pesanan',
+        PesananController::class
+    );
+
 });
 
 /*
@@ -276,7 +300,7 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
-    | USER MANAGEMENT
+    | DATA PENGGUNA
     |--------------------------------------------------------------------------
     */
 
