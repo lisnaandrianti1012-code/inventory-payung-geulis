@@ -2,64 +2,90 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pesanan;
 use Illuminate\Http\Request;
+use App\Models\Pesanan;
 
 class PesananController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    /*
+    |--------------------------------------------------------------------------
+    | INDEX
+    |--------------------------------------------------------------------------
+    */
+
+    public function index(Request $request)
     {
-        //
+        /*
+        |--------------------------------------------------------------------------
+        | SEARCH
+        |--------------------------------------------------------------------------
+        */
+
+        $search = $request->search;
+
+        /*
+        |--------------------------------------------------------------------------
+        | DATA PESANAN
+        |--------------------------------------------------------------------------
+        */
+
+        $pesanan = Pesanan::when(
+                        $search,
+                        function($query) use ($search){
+
+                            $query->where(
+                                'nama_customer',
+                                'like',
+                                '%'.$search.'%'
+                            )
+
+                            ->orWhere(
+                                'nama_produk',
+                                'like',
+                                '%'.$search.'%'
+                            );
+
+                        }
+                    )
+
+                    ->latest()
+
+                    ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | RETURN VIEW
+        |--------------------------------------------------------------------------
+        */
+
+        return view(
+            'pesanan.index',
+            compact(
+                'pesanan',
+                'search'
+            )
+        );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | DELETE
+    |--------------------------------------------------------------------------
+    */
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function destroy($id)
     {
-        //
-    }
+        $pesanan = Pesanan::findOrFail($id);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Pesanan $pesanan)
-    {
-        //
-    }
+        $pesanan->delete();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Pesanan $pesanan)
-    {
-        //
-    }
+        return redirect(
+            '/pesanan'
+        )->with(
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Pesanan $pesanan)
-    {
-        //
-    }
+            'success',
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Pesanan $pesanan)
-    {
-        //
+            'Pesanan berhasil dihapus'
+        );
     }
 }

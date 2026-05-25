@@ -647,13 +647,6 @@ RESPONSIVE
 
     <span>Checkout Penjualan</span>
 
-</a>
-
-<div class="menu-title">
-
-    ANALYTICS
-
-</div>
 
 <!-- LAPORAN -->
 
@@ -663,17 +656,6 @@ RESPONSIVE
     <i class="fa fa-chart-line"></i>
 
     <span>Laporan Penjualan</span>
-
-</a>
-
-<!-- ANALYTICS -->
-
-<a href="/analytics"
-   class="{{ request()->is('analytics*') ? 'active' : '' }}">
-
-    <i class="fa fa-chart-pie"></i>
-
-    <span>Analytics</span>
 
 </a>
 
