@@ -19,7 +19,6 @@ use App\Http\Controllers\PesananController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AnalyticsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -322,10 +321,7 @@ Route::middleware([
         Route::get('/delete/{id}', 'destroy');
 
     });
-    Route::get(
-    '/analytics',
-    [AnalyticsController::class, 'index']
-);
+    
 
 });
 
