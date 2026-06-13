@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProdukCustomerApiController;
 use App\Http\Controllers\Api\PesananApiController;
 
@@ -18,6 +19,28 @@ Route::get('/test', function () {
     ]);
 
 });
+
+/*
+|--------------------------------------------------------------------------
+| REGISTER CUSTOMER
+|--------------------------------------------------------------------------
+*/
+
+Route::post(
+    '/register',
+    [AuthController::class, 'register']
+);
+
+/*
+|--------------------------------------------------------------------------
+| LOGIN CUSTOMER
+|--------------------------------------------------------------------------
+*/
+
+Route::post(
+    '/login',
+    [AuthController::class, 'login']
+);
 
 /*
 |--------------------------------------------------------------------------
