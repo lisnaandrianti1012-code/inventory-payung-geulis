@@ -2,23 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| CONTROLLER
-|--------------------------------------------------------------------------
-*/
-
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProdukCustomerController;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\StokMasukController;
-use App\Http\Controllers\StokKeluarController;
-use App\Http\Controllers\TransaksiController;
-use App\Http\Controllers\PesananController;
-use App\Http\Controllers\LaporanController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StokKeluarController;
+use App\Http\Controllers\StokMasukController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,12 +39,6 @@ Route::middleware('auth')->group(function () {
         [DashboardController::class, 'index']
     )->name('dashboard');
 
-    /*
-    |--------------------------------------------------------------------------
-    | REALTIME AJAX
-    |--------------------------------------------------------------------------
-    */
-
     Route::get(
         '/dashboard/realtime',
         [DashboardController::class, 'realtime']
@@ -66,9 +54,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
-    Route::controller(
-        ProfileController::class
-    )->group(function () {
+    Route::controller(ProfileController::class)->group(function () {
 
         Route::get(
             '/profile',
@@ -106,23 +92,23 @@ Route::middleware([
     |--------------------------------------------------------------------------
     */
 
-    Route::controller(
-        ProdukController::class
-    )->prefix('produk')->group(function () {
+    Route::controller(ProdukController::class)
+        ->prefix('produk')
+        ->group(function () {
 
-        Route::get('/', 'index');
+            Route::get('/', 'index');
 
-        Route::get('/create', 'create');
+            Route::get('/create', 'create');
 
-        Route::post('/store', 'store');
+            Route::post('/store', 'store');
 
-        Route::get('/edit/{id}', 'edit');
+            Route::get('/edit/{id}', 'edit');
 
-        Route::post('/update/{id}', 'update');
+            Route::post('/update/{id}', 'update');
 
-        Route::get('/delete/{id}', 'destroy');
+            Route::get('/delete/{id}', 'destroy');
 
-    });
+        });
 
     /*
     |--------------------------------------------------------------------------
@@ -133,7 +119,7 @@ Route::middleware([
     Route::resource(
         'produk-customer',
         ProdukCustomerController::class
-    );
+    )->except(['show']);
 
     /*
     |--------------------------------------------------------------------------
@@ -141,23 +127,23 @@ Route::middleware([
     |--------------------------------------------------------------------------
     */
 
-    Route::controller(
-        SupplierController::class
-    )->prefix('supplier')->group(function () {
+    Route::controller(SupplierController::class)
+        ->prefix('supplier')
+        ->group(function () {
 
-        Route::get('/', 'index');
+            Route::get('/', 'index');
 
-        Route::get('/create', 'create');
+            Route::get('/create', 'create');
 
-        Route::post('/store', 'store');
+            Route::post('/store', 'store');
 
-        Route::get('/edit/{id}', 'edit');
+            Route::get('/edit/{id}', 'edit');
 
-        Route::post('/update/{id}', 'update');
+            Route::post('/update/{id}', 'update');
 
-        Route::get('/delete/{id}', 'destroy');
+            Route::get('/delete/{id}', 'destroy');
 
-    });
+        });
 
     /*
     |--------------------------------------------------------------------------
@@ -165,17 +151,17 @@ Route::middleware([
     |--------------------------------------------------------------------------
     */
 
-    Route::controller(
-        LaporanController::class
-    )->prefix('laporan')->group(function () {
+    Route::controller(LaporanController::class)
+        ->prefix('laporan')
+        ->group(function () {
 
-        Route::get('/', 'index');
+            Route::get('/', 'index');
 
-        Route::get('/pdf', 'pdf');
+            Route::get('/pdf', 'pdf');
 
-        Route::get('/excel', 'excel');
+            Route::get('/excel', 'excel');
 
-    });
+        });
 
 });
 
@@ -190,45 +176,33 @@ Route::middleware([
     'role:admin,gudang'
 ])->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | PENERIMAAN BARANG
-    |--------------------------------------------------------------------------
-    */
+    Route::controller(StokMasukController::class)
+        ->prefix('stok-masuk')
+        ->group(function () {
 
-    Route::controller(
-        StokMasukController::class
-    )->prefix('stok-masuk')->group(function () {
+            Route::get('/', 'index');
 
-        Route::get('/', 'index');
+            Route::get('/create', 'create');
 
-        Route::get('/create', 'create');
+            Route::post('/store', 'store');
 
-        Route::post('/store', 'store');
+            Route::get('/delete/{id}', 'destroy');
 
-        Route::get('/delete/{id}', 'destroy');
+        });
 
-    });
+    Route::controller(StokKeluarController::class)
+        ->prefix('stok-keluar')
+        ->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | DISTRIBUSI BARANG
-    |--------------------------------------------------------------------------
-    */
+            Route::get('/', 'index');
 
-    Route::controller(
-        StokKeluarController::class
-    )->prefix('stok-keluar')->group(function () {
+            Route::get('/create', 'create');
 
-        Route::get('/', 'index');
+            Route::post('/store', 'store');
 
-        Route::get('/create', 'create');
+            Route::get('/delete/{id}', 'destroy');
 
-        Route::post('/store', 'store');
-
-        Route::get('/delete/{id}', 'destroy');
-
-    });
+        });
 
 });
 
@@ -243,42 +217,24 @@ Route::middleware([
     'role:admin,kasir'
 ])->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | CHECKOUT PENJUALAN
-    |--------------------------------------------------------------------------
-    */
+    Route::controller(TransaksiController::class)
+        ->prefix('transaksi')
+        ->group(function () {
 
-    Route::controller(
-        TransaksiController::class
-    )->prefix('transaksi')->group(function () {
+            Route::get('/', 'index');
 
-        Route::get('/', 'index');
+            Route::get('/create', 'create');
 
-        Route::get('/create', 'create');
+            Route::post('/store', 'store');
 
-        Route::post('/store', 'store');
+            Route::get('/delete/{id}', 'destroy');
 
-        Route::get('/delete/{id}', 'destroy');
+            Route::get(
+                '/invoice/{id}',
+                'invoice'
+            );
 
-        /*
-        |--------------------------------------------------------------------------
-        | INVOICE
-        |--------------------------------------------------------------------------
-        */
-
-        Route::get(
-            '/invoice/{id}',
-            'invoice'
-        );
-
-    });
-
-    /*
-    |--------------------------------------------------------------------------
-    | PESANAN CUSTOMER
-    |--------------------------------------------------------------------------
-    */
+        });
 
     Route::resource(
         'pesanan',
@@ -298,30 +254,23 @@ Route::middleware([
     'role:admin'
 ])->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | DATA PENGGUNA
-    |--------------------------------------------------------------------------
-    */
+    Route::controller(UserController::class)
+        ->prefix('user')
+        ->group(function () {
 
-    Route::controller(
-        UserController::class
-    )->prefix('user')->group(function () {
+            Route::get('/', 'index');
 
-        Route::get('/', 'index');
+            Route::get('/create', 'create');
 
-        Route::get('/create', 'create');
+            Route::post('/store', 'store');
 
-        Route::post('/store', 'store');
+            Route::get('/edit/{id}', 'edit');
 
-        Route::get('/edit/{id}', 'edit');
+            Route::post('/update/{id}', 'update');
 
-        Route::post('/update/{id}', 'update');
+            Route::get('/delete/{id}', 'destroy');
 
-        Route::get('/delete/{id}', 'destroy');
-
-    });
-    
+        });
 
 });
 
@@ -332,3 +281,4 @@ Route::middleware([
 */
 
 require __DIR__.'/auth.php';
+

@@ -9,11 +9,16 @@ class ProdukCustomerApiController extends Controller
 {
     public function index()
     {
-        $produk = ProdukCustomer::all();
+        $produk = ProdukCustomer::latest()->get();
+
+        foreach ($produk as $item) {
+            if ($item->gambar && !str_starts_with($item->gambar, 'http')) {
+                $item->gambar = url('storage/' . $item->gambar);
+            }
+        }
 
         return response()->json([
             'success' => true,
-            'message' => 'Data Produk Customer',
             'data' => $produk
         ]);
     }

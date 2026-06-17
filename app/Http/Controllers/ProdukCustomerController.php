@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\ProdukCustomer;
+use Illuminate\Http\Request;
 
-class ProdukCustomerController
-extends Controller
+class ProdukCustomerController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
     | INDEX
     |--------------------------------------------------------------------------
     */
-
     public function index()
     {
         $produk = ProdukCustomer::latest()->get();
@@ -29,12 +27,9 @@ extends Controller
     | CREATE
     |--------------------------------------------------------------------------
     */
-
     public function create()
     {
-        return view(
-            'produk_customer.create'
-        );
+        return view('produk_customer.create');
     }
 
     /*
@@ -42,67 +37,47 @@ extends Controller
     | STORE
     |--------------------------------------------------------------------------
     */
-
     public function store(Request $request)
     {
         $request->validate([
-
-            'nama_produk' => 'required',
-
-            'harga' => 'required',
-
-            'stok' => 'required',
-
-            'deskripsi' => 'required',
-
-            'gambar' => 'required|image',
-
+            'nama_produk' => 'required|max:255',
+            'harga'       => 'required|numeric',
+            'stok'        => 'required|numeric',
+            'deskripsi'   => 'required',
+            'gambar'      => 'required|image|mimes:jpg,jpeg,png'
         ]);
 
         /*
         |--------------------------------------------------------------------------
-        | UPLOAD GAMBAR
+        | Upload Gambar
         |--------------------------------------------------------------------------
         */
 
-        $gambar = $request->file('gambar')
-                          ->store(
-                              'produk_customer',
-                              'public'
-                          );
+        $gambar = $request->file('gambar')->store(
+            'produk_customer',
+            'public'
+        );
 
         /*
         |--------------------------------------------------------------------------
-        | SIMPAN DATABASE
+        | Simpan Data
         |--------------------------------------------------------------------------
         */
 
         ProdukCustomer::create([
-
-            'nama_produk' =>
-            $request->nama_produk,
-
-            'harga' =>
-            $request->harga,
-
-            'stok' =>
-            $request->stok,
-
-            'deskripsi' =>
-            $request->deskripsi,
-
-            'gambar' =>
-            $gambar,
-
+            'nama_produk' => $request->nama_produk,
+            'harga'       => $request->harga,
+            'stok'        => $request->stok,
+            'deskripsi'   => $request->deskripsi,
+            'gambar'      => $gambar
         ]);
 
-        return redirect(
-            '/produk-customer'
-        )->with(
-
-            'success',
-            'Produk customer berhasil ditambahkan'
-        );
+        return redirect()
+            ->route('produk-customer.index')
+            ->with(
+                'success',
+                'Produk customer berhasil ditambahkan'
+            );
     }
 
     /*
@@ -110,11 +85,9 @@ extends Controller
     | EDIT
     |--------------------------------------------------------------------------
     */
-
     public function edit($id)
     {
-        $produk =
-        ProdukCustomer::findOrFail($id);
+        $produk = ProdukCustomer::findOrFail($id);
 
         return view(
             'produk_customer.edit',
@@ -127,67 +100,56 @@ extends Controller
     | UPDATE
     |--------------------------------------------------------------------------
     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama_produk' => 'required|max:255',
+            'harga'       => 'required|numeric',
+            'stok'        => 'required|numeric',
+            'deskripsi'   => 'required'
+        ]);
 
-    public function update(
-        Request $request,
-        $id
-    ){
-
-        $produk =
-        ProdukCustomer::findOrFail($id);
+        $produk = ProdukCustomer::findOrFail($id);
 
         /*
         |--------------------------------------------------------------------------
-        | CEK GAMBAR
+        | Upload Gambar Baru
         |--------------------------------------------------------------------------
         */
 
-        if($request->hasFile('gambar')){
+        if ($request->hasFile('gambar')) {
 
-            $gambar = $request
-                ->file('gambar')
-                ->store(
-                    'produk_customer',
-                    'public'
-                );
+            $gambar = $request->file('gambar')->store(
+                'produk_customer',
+                'public'
+            );
 
-        }else{
+        } else {
 
             $gambar = $produk->gambar;
+
         }
 
         /*
         |--------------------------------------------------------------------------
-        | UPDATE
+        | Update Data
         |--------------------------------------------------------------------------
         */
 
         $produk->update([
-
-            'nama_produk' =>
-            $request->nama_produk,
-
-            'harga' =>
-            $request->harga,
-
-            'stok' =>
-            $request->stok,
-
-            'deskripsi' =>
-            $request->deskripsi,
-
-            'gambar' =>
-            $gambar,
-
+            'nama_produk' => $request->nama_produk,
+            'harga'       => $request->harga,
+            'stok'        => $request->stok,
+            'deskripsi'   => $request->deskripsi,
+            'gambar'      => $gambar
         ]);
 
-        return redirect(
-            '/produk-customer'
-        )->with(
-
-            'success',
-            'Produk berhasil diupdate'
-        );
+        return redirect()
+            ->route('produk-customer.index')
+            ->with(
+                'success',
+                'Produk berhasil diupdate'
+            );
     }
 
     /*
@@ -195,20 +157,18 @@ extends Controller
     | DELETE
     |--------------------------------------------------------------------------
     */
-
     public function destroy($id)
     {
-        $produk =
-        ProdukCustomer::findOrFail($id);
+        $produk = ProdukCustomer::findOrFail($id);
 
         $produk->delete();
 
-        return redirect(
-            '/produk-customer'
-        )->with(
-
-            'success',
-            'Produk berhasil dihapus'
-        );
+        return redirect()
+            ->route('produk-customer.index')
+            ->with(
+                'success',
+                'Produk berhasil dihapus'
+            );
     }
 }
+

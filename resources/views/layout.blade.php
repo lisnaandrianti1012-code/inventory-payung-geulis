@@ -639,18 +639,19 @@ RESPONSIVE
 </a>
 
 <!-- TRANSAKSI -->
-
-<a href="/transaksi"
-   class="{{ request()->is('transaksi*') ? 'active' : '' }}">
-
-    <i class="fa fa-cash-register"></i>
-
-    <span>Checkout Penjualan</span>
-
-
-<!-- LAPORAN -->
-
-<a href="/laporan"
+ 
+ <a href="/transaksi"
+    class="{{ request()->is('transaksi*') ? 'active' : '' }}">
+ 
+     <i class="fa fa-cash-register"></i>
+ 
+     <span>Checkout Penjualan</span>
+ 
+ </a>
+ 
+ <!-- LAPORAN -->
+ 
+ <a href="/laporan"
    class="{{ request()->is('laporan*') ? 'active' : '' }}">
 
     <i class="fa fa-chart-line"></i>

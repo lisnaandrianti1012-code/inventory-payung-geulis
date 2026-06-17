@@ -64,7 +64,7 @@ Tambah Produk
 
 <td>
 
-<img src="/gambar/{{ $p->gambar }}"
+<img src="{{ str_starts_with($p->gambar, 'http') ? $p->gambar : '/gambar/'.$p->gambar }}"
      width="80"
      class="rounded">
 

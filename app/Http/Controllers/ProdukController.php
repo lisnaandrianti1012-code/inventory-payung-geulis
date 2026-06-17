@@ -2,39 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Models\Produk;
 use App\Models\ActivityLog;
+use App\Models\Produk;
+use Illuminate\Http\Request;
 
 class ProdukController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | API UNTUK FLUTTER
+    |--------------------------------------------------------------------------
+    */
+    public function apiProduk()
+    {
+        $produk = Produk::latest()->get();
+
+        foreach ($produk as $item) {
+            $item->gambar = url('gambar/' . $item->gambar);
+        }
+
+        return response()->json($produk);
+    }
 
     /*
     |--------------------------------------------------------------------------
     | INDEX
     |--------------------------------------------------------------------------
     */
-
     public function index(Request $request)
     {
-
         $search = $request->search;
 
         $produk = Produk::where(
-                    'nama_produk',
-                    'like',
-                    '%'.$search.'%'
-                )
-                ->latest()
-                ->paginate(8);
+            'nama_produk',
+            'like',
+            '%' . $search . '%'
+        )
+        ->latest()
+        ->paginate(8);
 
         return view(
             'produk.index',
-            compact(
-                'produk',
-                'search'
-            )
+            compact('produk', 'search')
         );
     }
 
@@ -43,13 +52,9 @@ class ProdukController extends Controller
     | CREATE
     |--------------------------------------------------------------------------
     */
-
     public function create()
     {
-
-        return view(
-            'produk.create'
-        );
+        return view('produk.create');
     }
 
     /*
@@ -57,104 +62,41 @@ class ProdukController extends Controller
     | STORE
     |--------------------------------------------------------------------------
     */
-
     public function store(Request $request)
     {
-
-        /*
-        |--------------------------------------------------------------------------
-        | VALIDASI
-        |--------------------------------------------------------------------------
-        */
-
         $request->validate([
-
-            'nama_produk' =>
-                'required|max:255',
-
-            'kategori' =>
-                'required|max:255',
-
-            'harga' =>
-                'required|numeric',
-
-            'stok' =>
-                'required|numeric',
-
-            'gambar' =>
-                'required|image|mimes:jpg,jpeg,png'
-
+            'nama_produk' => 'required|max:255',
+            'kategori' => 'required|max:255',
+            'harga' => 'required|numeric',
+            'stok' => 'required|numeric',
+            'gambar' => 'required|image|mimes:jpg,jpeg,png'
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | UPLOAD GAMBAR
-        |--------------------------------------------------------------------------
-        */
-
-        $gambar = time().'.'.$request
-                    ->gambar
-                    ->extension();
+        $gambar = time() . '.' . $request->gambar->extension();
 
         $request->gambar->move(
             public_path('gambar'),
             $gambar
         );
 
-        /*
-        |--------------------------------------------------------------------------
-        | SIMPAN PRODUK
-        |--------------------------------------------------------------------------
-        */
-
         Produk::create([
-
-            'nama_produk' =>
-                $request->nama_produk,
-
-            'kategori' =>
-                $request->kategori,
-
-            'harga' =>
-                $request->harga,
-
-            'stok' =>
-                $request->stok,
-
-            'gambar' =>
-                $gambar
-
+            'nama_produk' => $request->nama_produk,
+            'kategori'    => $request->kategori,
+            'harga'       => $request->harga,
+            'stok'        => $request->stok,
+            'gambar'      => $gambar
         ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | ACTIVITY LOG
-        |--------------------------------------------------------------------------
-        */
 
         ActivityLog::create([
-
-            'user' =>
-                auth()->user()->name,
-
-            'aktivitas' =>
-                'Menambahkan produk '
-                .$request->nama_produk
-
+            'user'      => auth()->user()->name,
+            'aktivitas' => 'Menambahkan produk ' . $request->nama_produk
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | REDIRECT
-        |--------------------------------------------------------------------------
-        */
-
-        return redirect(
-            '/produk'
-        )->with(
-            'success',
-            'Produk berhasil ditambahkan'
-        );
+        return redirect('/produk')
+            ->with(
+                'success',
+                'Produk berhasil ditambahkan'
+            );
     }
 
     /*
@@ -162,11 +104,9 @@ class ProdukController extends Controller
     | EDIT
     |--------------------------------------------------------------------------
     */
-
     public function edit($id)
     {
-
-        $produk = Produk::find($id);
+        $produk = Produk::findOrFail($id);
 
         return view(
             'produk.edit',
@@ -179,47 +119,20 @@ class ProdukController extends Controller
     | UPDATE
     |--------------------------------------------------------------------------
     */
-
-    public function update(
-        Request $request,
-        $id
-    ){
-
-        $produk = Produk::find($id);
-
-        /*
-        |--------------------------------------------------------------------------
-        | VALIDASI
-        |--------------------------------------------------------------------------
-        */
+    public function update(Request $request, $id)
+    {
+        $produk = Produk::findOrFail($id);
 
         $request->validate([
-
-            'nama_produk' =>
-                'required|max:255',
-
-            'kategori' =>
-                'required|max:255',
-
-            'harga' =>
-                'required|numeric',
-
-            'stok' =>
-                'required|numeric'
-
+            'nama_produk' => 'required|max:255',
+            'kategori'    => 'required|max:255',
+            'harga'       => 'required|numeric',
+            'stok'        => 'required|numeric'
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | UPDATE GAMBAR
-        |--------------------------------------------------------------------------
-        */
+        if ($request->hasFile('gambar')) {
 
-        if($request->gambar){
-
-            $gambar = time().'.'.$request
-                        ->gambar
-                        ->extension();
+            $gambar = time() . '.' . $request->gambar->extension();
 
             $request->gambar->move(
                 public_path('gambar'),
@@ -229,55 +142,23 @@ class ProdukController extends Controller
             $produk->gambar = $gambar;
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | UPDATE DATA
-        |--------------------------------------------------------------------------
-        */
-
-        $produk->nama_produk =
-            $request->nama_produk;
-
-        $produk->kategori =
-            $request->kategori;
-
-        $produk->harga =
-            $request->harga;
-
-        $produk->stok =
-            $request->stok;
+        $produk->nama_produk = $request->nama_produk;
+        $produk->kategori = $request->kategori;
+        $produk->harga = $request->harga;
+        $produk->stok = $request->stok;
 
         $produk->save();
 
-        /*
-        |--------------------------------------------------------------------------
-        | ACTIVITY LOG
-        |--------------------------------------------------------------------------
-        */
-
         ActivityLog::create([
-
-            'user' =>
-                auth()->user()->name,
-
-            'aktivitas' =>
-                'Mengedit produk '
-                .$produk->nama_produk
-
+            'user'      => auth()->user()->name,
+            'aktivitas' => 'Mengedit produk ' . $produk->nama_produk
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | REDIRECT
-        |--------------------------------------------------------------------------
-        */
-
-        return redirect(
-            '/produk'
-        )->with(
-            'success',
-            'Produk berhasil diupdate'
-        );
+        return redirect('/produk')
+            ->with(
+                'success',
+                'Produk berhasil diupdate'
+            );
     }
 
     /*
@@ -285,42 +166,21 @@ class ProdukController extends Controller
     | DELETE
     |--------------------------------------------------------------------------
     */
-
     public function destroy($id)
     {
-
-        $produk = Produk::find($id);
-
-        /*
-        |--------------------------------------------------------------------------
-        | ACTIVITY LOG
-        |--------------------------------------------------------------------------
-        */
+        $produk = Produk::findOrFail($id);
 
         ActivityLog::create([
-
-            'user' =>
-                auth()->user()->name,
-
-            'aktivitas' =>
-                'Menghapus produk '
-                .$produk->nama_produk
-
+            'user'      => auth()->user()->name,
+            'aktivitas' => 'Menghapus produk ' . $produk->nama_produk
         ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | HAPUS PRODUK
-        |--------------------------------------------------------------------------
-        */
 
         $produk->delete();
 
-        return redirect(
-            '/produk'
-        )->with(
-            'success',
-            'Produk berhasil dihapus'
-        );
+        return redirect('/produk')
+            ->with(
+                'success',
+                'Produk berhasil dihapus'
+            );
     }
 }
