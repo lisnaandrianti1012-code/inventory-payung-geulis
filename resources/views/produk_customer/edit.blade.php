@@ -104,7 +104,7 @@
             @if ($produk->gambar)
 
                 <img
-                    src="{{ asset('storage/' . $produk->gambar) }}"
+                    src="{{ str_starts_with($produk->gambar, 'http') ? $produk->gambar : asset('storage/' . $produk->gambar) }}"
                     width="150"
                     class="rounded shadow-sm mt-2">
 
