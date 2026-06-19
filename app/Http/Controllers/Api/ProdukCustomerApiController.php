@@ -13,7 +13,7 @@ class ProdukCustomerApiController extends Controller
 
         foreach ($produk as $item) {
             if ($item->gambar && !str_starts_with($item->gambar, 'http')) {
-                $item->gambar = url('storage/' . $item->gambar);
+                $item->gambar = url('api/gambar/' . basename($item->gambar));
             }
         }
 
