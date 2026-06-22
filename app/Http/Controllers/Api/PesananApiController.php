@@ -14,9 +14,13 @@ class PesananApiController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function index()
+    public function index(Request $request)
     {
-        $pesanan = Pesanan::latest()->get();
+        $query = Pesanan::latest();
+        if ($request->has('email') && !empty($request->email)) {
+            $query->where('email', $request->email);
+        }
+        $pesanan = $query->get();
 
         return response()->json([
 
@@ -47,7 +51,9 @@ class PesananApiController extends Controller
 
         'alamat' => $request->alamat,
 
-        'status' => 'Pending'
+        'status' => 'Pending',
+
+        'email' => $request->email
 
     ]);
 

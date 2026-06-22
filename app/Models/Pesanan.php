@@ -18,7 +18,9 @@ class Pesanan extends Model
 
         'alamat',
 
-        'status'
+        'status',
+
+        'email'
 
     ];
 }
