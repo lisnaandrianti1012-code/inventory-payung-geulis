@@ -236,6 +236,11 @@ Route::middleware([
 
         });
 
+    Route::get(
+        '/pesanan/delete/{id}',
+        [PesananController::class, 'destroy']
+    );
+
     Route::resource(
         'pesanan',
         PesananController::class

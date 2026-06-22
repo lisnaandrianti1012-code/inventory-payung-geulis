@@ -88,4 +88,32 @@ class PesananController extends Controller
             'Pesanan berhasil dihapus'
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE
+    |--------------------------------------------------------------------------
+    */
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:Pending,Diproses,Dikirim,Selesai'
+        ]);
+
+        $pesanan = Pesanan::findOrFail($id);
+
+        $pesanan->status = $request->status;
+
+        $pesanan->save();
+
+        return redirect(
+            '/pesanan'
+        )->with(
+
+            'success',
+
+            'Status pesanan berhasil diperbarui'
+        );
+    }
 }
